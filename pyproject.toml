@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eGPS4Py"
+version = "0.0.5"
+description = "A utility package for myutils and phylo functions"
+readme = "README.md"
+authors = [
+    {name = "Dalang Yu", email = "yudalang1994@outlook.com"},
+]
+license = {text = "LGPL-3.0"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",  # ✅ 与requires-python匹配
+]
+requires-python = ">=3.10"  # 硬性要求：只支持Python 3.10+
+dependencies = [
+    "jpype1>=1.5.2",
+    "pandas>=2.3.0",
+    "openpyxl>=3.1.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/eGPS4Py"
+Repository = "https://github.com/yourusername/eGPS4Py.git"
+Issues = "https://github.com/yourusername/eGPS4Py/issues"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["eGPS4Py*"]
+exclude = ["tests*"]
+
+#在 eGPS4Py/phylo/ 包里
+#所有 .json 文件都算作“包数据”，会被包含进最终 wheel
+#安装后 importlib.resources 或 pkgutil.get_data() 能访问
+#假设 eGPS4Py/phylo/ 里有：
+#eGPS4Py/phylo/
+#  ├── __init__.py
+#  ├── tree_model.py
+#  ├── config.json   ← 你想随包一起安装
+#安装后 .json 会进入 site-packages/eGPS4Py/phylo/config.json，运行时可以读：
+#
+#import importlib.resources
+#with importlib.resources.files("eGPS4Py.phylo").joinpath("config.json").open("r") as f:
+#    data = f.read()
+#如果 没写 [tool.setuptools.package-data]，默认只打 Python 文件，config.json 不会安装到 site-packages 里。
+[tool.setuptools.package-data]
+"eGPS4Py.phylo" = ["*.json"]

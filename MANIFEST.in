@@ -1,0 +1,8 @@
+include README.md
+include LICENSE
+recursive-include my_package *.json
+recursive-include my_package *.txt
+recursive-include my_package *.yml
+recursive-include my_package *.yaml
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
